@@ -1,21 +1,10 @@
 """
 Netflix Show Clustering with KMeans
-====================================
-A Streamlit application that demonstrates unsupervised-learning concepts
-using Netflix catalogue data:
 
-  1. Data cleaning and encoding categorical features (genre, rating)
-  2. Why feature scaling is essential for KMeans clustering
-  3. Choosing the optimal K with the Elbow Method and Silhouette Score
-  4. Dimensionality reduction with PCA for 2-D visualization
-  5. Interpreting what each cluster represents
-
-Run with:  streamlit run app.py
 """
 
-# =============================================================
 # 1. Imports
-# =============================================================
+
 import os
 import warnings
 
@@ -33,18 +22,16 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 warnings.filterwarnings("ignore", category=UserWarning)
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-# =============================================================
 # 2. Page configuration
-# =============================================================
+
 st.set_page_config(
     page_title="Netflix Clustering – KMeans & PCA",
     page_icon="🎬",
     layout="wide",
 )
 
-# =============================================================
 # 3. Constants
-# =============================================================
+
 
 # Content ratings commonly found on Netflix
 RATINGS = ["TV-MA", "TV-14", "TV-PG", "R", "PG-13", "TV-Y7", "TV-Y", "PG",
@@ -67,10 +54,8 @@ COUNTRY_POOL = [
     "Germany", "Nigeria", "Brazil", "Turkey", "Egypt",
 ]
 
-
-# =============================================================
 # 4. Data loading helpers
-# =============================================================
+
 
 @st.cache_data
 def load_data() -> pd.DataFrame:
@@ -182,9 +167,8 @@ def load_data() -> pd.DataFrame:
     return df
 
 
-# =============================================================
 # 5. Feature engineering helpers
-# =============================================================
+
 
 @st.cache_data
 def engineer_features(df: pd.DataFrame) -> tuple:
@@ -271,10 +255,7 @@ def scale_features(_encoded_df: pd.DataFrame) -> tuple:
     scaled = scaler.fit_transform(_encoded_df)
     return scaled, _encoded_df.columns.tolist()
 
-
-# =============================================================
 # 6. Clustering helpers
-# =============================================================
 
 @st.cache_data
 def compute_elbow_and_silhouette(
@@ -321,10 +302,7 @@ def run_pca(_scaled: np.ndarray, n_components: int = 2) -> np.ndarray:
     pca = PCA(n_components=n_components, random_state=42)
     return pca.fit_transform(_scaled)
 
-
-# =============================================================
 # 7. Plotting helpers
-# =============================================================
 
 def plot_elbow(metrics_df: pd.DataFrame) -> plt.Figure:
     """Return a figure with the Elbow Method (inertia vs K)."""
@@ -433,9 +411,9 @@ def main() -> None:
         ]
     )
 
-    # ---------------------------------------------------------
+   
     # Tab 1 – Data Overview
-    # ---------------------------------------------------------
+    
     with tab1:
         st.subheader("Dataset at a Glance")
 
@@ -473,23 +451,17 @@ def main() -> None:
                     df["release_year"].astype(str), "Release Year", top_n=10
                 )
             )
-
-    # ---------------------------------------------------------
+    
     # Tab 2 – Feature Engineering
-    # ---------------------------------------------------------
+  
     with tab2:
         st.subheader("Turning Categories into Numbers")
 
         # --- Rating encoding explanation ---
         st.markdown("#### 1 · Label Encoding the Rating Column")
         st.markdown(
-            """
-            **Label encoding** assigns a unique integer to each rating
-            category (e.g. *TV-MA → 7, PG-13 → 3*).  This is simple and
-            compact but implies an ordinal relationship between values, so
-            use it with care.  For KMeans the numeric distance is what
-            matters — combined with scaling it works well enough here.
-            """
+            
+        
         )
         # Show a small before/after table
         sample = clean_df[["title", "rating", "rating_encoded"]].drop_duplicates(
@@ -500,12 +472,7 @@ def main() -> None:
         # --- Genre one-hot explanation ---
         st.markdown("#### 2 · One-Hot Encoding Genres")
         st.markdown(
-            """
-            Each title can belong to **multiple genres** (comma-separated).
-            One-hot encoding creates a binary column per genre — a title
-            gets a **1** in every genre it belongs to.  This avoids any
-            false ordinal relationship between genres.
-            """
+          
         )
         st.dataframe(
             clean_df[["title", "listed_in"] + genre_cols].head(8),
@@ -515,18 +482,7 @@ def main() -> None:
         # --- Scaling explanation ---
         st.markdown("#### 3 · Feature Scaling (StandardScaler)")
         st.markdown(
-            """
-            > **Why does KMeans break without scaling?**
-            >
-            > KMeans minimises the *sum of squared Euclidean distances*
-            > from each point to its cluster centroid.  If `release_year`
-            > ranges from 1970–2023 while `is_movie` is just 0 or 1, the
-            > year feature will **dominate** every distance calculation and
-            > the binary features become noise.
-            >
-            > **StandardScaler** transforms each feature to zero mean and
-            > unit variance, ensuring equal contribution.
-            """
+          
         )
 
         before_after = pd.DataFrame({
@@ -544,9 +500,9 @@ def main() -> None:
             use_container_width=True,
         )
 
-    # ---------------------------------------------------------
+  
     # Tab 3 – Optimal K Selection
-    # ---------------------------------------------------------
+   
     with tab3:
         st.subheader("How Many Clusters?")
         st.markdown(
@@ -558,8 +514,7 @@ def main() -> None:
               suggests diminishing returns from adding more clusters.
             * **Silhouette Score** — measures how well each point fits its
               own cluster vs. the nearest neighbour cluster.  Ranges from
-              −1 (wrong cluster) to +1 (dense, well-separated clusters).
-              Pick the K with the highest silhouette score.
+              −1 (wrong cluster) to +1 (dense, well-separated clusters)
             """
         )
 
@@ -580,19 +535,13 @@ def main() -> None:
             f"📌 The highest silhouette score is at **K = {best_k}**.  "
             f"Use the sidebar slider to experiment with different values."
         )
-
-    # ---------------------------------------------------------
+      
     # Tab 4 – Cluster Visualisation
-    # ---------------------------------------------------------
+   
     with tab4:
         st.subheader(f"PCA Scatter Plot (K = {num_clusters})")
         st.markdown(
-            """
-            **PCA (Principal Component Analysis)** projects the
-            high-dimensional feature space onto 2 axes that capture the
-            most variance.  Each dot is a Netflix title, coloured by its
-            KMeans cluster assignment.
-            """
+          
         )
 
         labels = run_kmeans(scaled, num_clusters)
@@ -603,9 +552,9 @@ def main() -> None:
         sil = silhouette_score(scaled, labels)
         st.metric("Silhouette Score", f"{sil:.4f}")
 
-    # ---------------------------------------------------------
+  
     # Tab 5 – Cluster Analysis
-    # ---------------------------------------------------------
+ 
     with tab5:
         st.subheader(f"What's Inside Each Cluster? (K = {num_clusters})")
         st.markdown(
@@ -658,9 +607,6 @@ def main() -> None:
                     use_container_width=True,
                 )
 
-
-# =============================================================
 # 9. Run
-# =============================================================
 if __name__ == "__main__":
     main()
