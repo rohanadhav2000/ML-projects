@@ -1,6 +1,5 @@
 """
 Netflix Show Clustering with KMeans
-
 """
 
 # 1. Imports
@@ -59,14 +58,7 @@ COUNTRY_POOL = [
 
 @st.cache_data
 def load_data() -> pd.DataFrame:
-    """Load Netflix titles from CSV, Kaggle, or generate a synthetic dataset.
-
-    Priority order:
-      1. Local CSV at ``data/netflix_titles.csv``
-      2. Automatic download via ``kagglehub`` (requires Kaggle credentials)
-      3. Synthetic data (~2 000 rows) whose distributions approximate the
-         real Netflix catalogue
-    """
+    
     csv_path = os.path.join(os.path.dirname(__file__), "data", "netflix_titles.csv")
 
     if os.path.exists(csv_path):
@@ -172,21 +164,7 @@ def load_data() -> pd.DataFrame:
 
 @st.cache_data
 def engineer_features(df: pd.DataFrame) -> tuple:
-    """Clean data and build a numeric feature matrix for clustering.
-
-    Steps
-    -----
-    1. Label-encode the content **rating** (ordinal-like categories).
-    2. One-hot encode the top genres extracted from ``listed_in``.
-    3. Extract a numeric **duration** value (minutes for movies, seasons
-       for TV shows).
-    4. Include ``release_year`` and a binary ``is_movie`` flag.
-
-    Returns (feature_df, encoded_df, genre_columns) where:
-    - ``feature_df`` is the human-readable feature table
-    - ``encoded_df`` has only the numeric columns used for clustering
-    - ``genre_columns`` lists the one-hot genre column names
-    """
+  
     clean = df.copy()
 
     # --- 1. Rating encoding (label encoding) ---
@@ -240,17 +218,7 @@ def engineer_features(df: pd.DataFrame) -> tuple:
 
 @st.cache_data
 def scale_features(_encoded_df: pd.DataFrame) -> tuple:
-    """Apply StandardScaler and return scaled array + scaler column names.
-
-    Why scale?
-    ----------
-    KMeans uses Euclidean distance to assign points to clusters.  If one
-    feature (e.g. ``release_year`` ~ 2020) has a much larger range than
-    another (e.g. ``is_movie`` ∈ {0, 1}), the large-range feature will
-    dominate distance calculations and the smaller features become
-    irrelevant.  StandardScaler centres each feature to mean=0, std=1 so
-    every feature contributes equally.
-    """
+   
     scaler = StandardScaler()
     scaled = scaler.fit_transform(_encoded_df)
     return scaled, _encoded_df.columns.tolist()
@@ -371,20 +339,7 @@ def main() -> None:
 
     # --- Header ---
     st.title("🎬 Netflix Show Clustering")
-    st.markdown(
-        """
-        This interactive demo applies **KMeans clustering** to Netflix
-        catalogue data.  You will explore:
 
-        | Concept | What you'll see |
-        |---|---|
-        | **Data Cleaning** | Handling missing values, encoding categories |
-        | **Feature Scaling** | Why KMeans *needs* scaled features |
-        | **Elbow Method** | Picking the right number of clusters |
-        | **Silhouette Score** | Quantifying cluster quality |
-        | **PCA** | Visualising high-dimensional clusters in 2-D |
-        """
-    )
     st.divider()
 
     # --- Load data ---
