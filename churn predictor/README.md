@@ -1,16 +1,16 @@
-# 📊 Salesforce Churn Predictor
+# Salesforce Churn Predictor
 
-**Difficulty: 5/10 — Real business framing, imbalanced data**
+**Real business framing, imbalanced data**
 
-## What It Is
+## Introduction
 
-Take a telecom churn dataset, engineer features from usage patterns and account history, and build a binary classifier. The core challenge is learning to optimize for recall vs precision based on the real business cost of missing a churning customer.
+Taking a telecom churn dataset, engineer features from usage patterns and account history, and build a binary classifier. The core challenge is learning to optimize for recall vs precision based on the real business cost of missing a churning customer.
 
 ## Tech Stack
 
 - Python, pandas, scikit-learn, imbalanced-learn, Matplotlib/Seaborn, Streamlit
 
-## What You Learn
+## Key Highlights
 
 - Feature engineering from raw transactional and usage data
 - Why accuracy is the wrong metric for imbalanced churn datasets
@@ -18,7 +18,7 @@ Take a telecom churn dataset, engineer features from usage patterns and account 
 - Handling imbalanced data with SMOTE
 - Building an interactive prediction app in Streamlit
 
-## How to Run
+## Execution
 
 ```bash
 # From the project root directory
