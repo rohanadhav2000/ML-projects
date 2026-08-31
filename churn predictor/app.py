@@ -1,6 +1,6 @@
 """
 Salesforce / Telecom Churn Predictor – Streamlit Application
-=============================================================
+
 An educational ML app that walks through the full churn-prediction pipeline:
   1. Exploratory data analysis
   2. Feature engineering from raw telecom data
