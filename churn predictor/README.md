@@ -13,10 +13,16 @@ Taking a telecom churn dataset, engineer features from usage patterns and accoun
 ## Key Highlights
 
 - Feature engineering from raw transactional and usage data
+  <img width="1368" height="742" alt="Screenshot 2026-08-31 at 1 45 33 PM" src="https://github.com/user-attachments/assets/02d8e1c0-6077-4042-89d7-0c8a7a0050e9" />
+  <img width="1384" height="789" alt="Screenshot 2026-08-31 at 1 45 58 PM" src="https://github.com/user-attachments/assets/c606de26-19ff-469f-a228-c758f28a445e" />
+
 - Why accuracy is the wrong metric for imbalanced churn datasets
 - Decision threshold tuning and the precision-recall tradeoff
 - Handling imbalanced data with SMOTE
 - Building an interactive prediction app in Streamlit
+
+
+
 
 ## Execution
 
