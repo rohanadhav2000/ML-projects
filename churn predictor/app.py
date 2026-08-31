@@ -8,7 +8,7 @@ An educational ML app that walks through the full churn-prediction pipeline:
   4. Decision-threshold tuning (precision ↔ recall trade-off)
   5. Model comparison & live predictions
 
-Run with:  streamlit run app.py
+executed with:  streamlit run app.py
 """
 
 # ──────────────────────────────────────────────────────────────
@@ -52,12 +52,7 @@ TARGET = "Churn"
 
 
 def _generate_synthetic_data(n: int = 7000) -> pd.DataFrame:
-    """Create a realistic synthetic telecom-churn dataset.
-
-    The generator uses conditional probabilities so that customers with
-    month-to-month contracts, no tech support, and high monthly charges
-    churn at higher rates – mirroring real-world patterns.
-
+    """
     Returns a DataFrame with ~26 % churn rate.
     """
     rng = np.random.default_rng(RANDOM_STATE)
@@ -218,8 +213,7 @@ def load_data() -> pd.DataFrame:
 
 @st.cache_data
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Create new features that capture domain knowledge about churn drivers.
-
+    """Creating new features that capture domain knowledge about churn drivers.
     Engineered columns
     ------------------
     tenure_bin          : categorical bucket (New / Mid / Loyal / Long-term)
@@ -268,7 +262,6 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     ).astype(int)
 
     return out
-
 
 # ──────────────────────────────────────────────────────────────
 # 3. Preprocessing for modelling
@@ -516,19 +509,18 @@ def main():
 
         st.markdown(
             """
-            ### Why accuracy is the *wrong* metric for churn
+            ### accuracy is the *wrong* metric for churn for reasons below:
 
             With ~74 % non-churn, a model that **always predicts "No Churn"**
-            would score **74 % accuracy** – yet it catches **zero** churners!
+            would score **74 % accuracy** – yet it catches **zero** churners
 
-            We need metrics that care about the *minority* class:
             - **Precision** – of predicted churners, how many actually churn?
             - **Recall** – of actual churners, how many did we catch?
             - **F1 Score** – harmonic mean of precision & recall.
             """
         )
 
-        # Demonstrate the "dumb" baseline.
+        # Demonstrating the "dumb" baseline.
         majority_acc = round((y_test == 0).mean() * 100, 1)
         st.metric("\"Always predict No Churn\" accuracy", f"{majority_acc} %")
         st.warning(
@@ -536,7 +528,7 @@ def main():
             "Accuracy alone is misleading on imbalanced data."
         )
 
-        # Train with and without SMOTE.
+        # Training with and without SMOTE.
         models_no_smote = train_models(X_train, y_train, use_smote=False)
         models_smote = train_models(X_train, y_train, use_smote=True)
 
@@ -592,9 +584,7 @@ def main():
 
         st.markdown(
             """
-            ### Every classifier outputs a *probability*, not a label
-
-            By default we use **0.50** as the cut-off: if P(churn) ≥ 0.50 →
+            ### By default using **0.50** as the cut-off: if P(churn) ≥ 0.50 →
             predict churn. But that default is rarely optimal.
 
             - **Lower the threshold** → catch more churners (↑ recall) but
@@ -606,7 +596,7 @@ def main():
             > a retention offer costs $20, you should favour recall – cast a
             > wider net.
 
-            Use the slider below to explore this trade-off in real time.
+            Using the slider below to explore this trade-off in real time.
             """
         )
 
