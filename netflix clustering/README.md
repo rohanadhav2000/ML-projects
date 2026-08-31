@@ -1,8 +1,6 @@
-# 🎬 Netflix Show Clustering
+# Netflix Show Clustering
 
-**Difficulty: 3/10 — Clean data, no labels needed**
-
-## What It Is
+## Brief Intro
 
 Group similar Netflix shows using unsupervised learning based on genre, rating, duration, and other metadata. Visualize the clusters to find patterns like "critically acclaimed short dramas" vs "long binge-worthy comedies."
 
@@ -10,14 +8,14 @@ Group similar Netflix shows using unsupervised learning based on genre, rating, 
 
 - Python, pandas, scikit-learn (KMeans, PCA), Matplotlib/Seaborn, Streamlit
 
-## What You Learn
+## Key highlights
 
 - Data cleaning and encoding categorical features (genre, rating)
 - Feature scaling before clustering (why KMeans breaks without it)
 - Choosing optimal K using the elbow method and silhouette score
 - Dimensionality reduction with PCA for visualization
 
-## How to Run
+## execution
 
 ```bash
 # From the project root directory
